@@ -19,7 +19,7 @@
             <span>收费报表</span>
           </div>
         </div>
-        <span class="header-title">福州数智云系统</span>
+        <span class="header-title">漳州数智云系统</span>
       </div>
     </div>
 
@@ -105,14 +105,16 @@ import BillingReportAgentModal from './widgets/BillingReportAgentModal.vue';
 
 const router = useRouter();
 const route = useRoute();
-const isHomePage = computed(() => route.path === '/1591');
+const isHomePage = computed(
+  () => route.path === '/' || route.path === '/1591'
+);
 const isBillingReportsPage = computed(
   () =>
     route.path === '/1591/billing-reports' || route.path === '/billing-reports'
 );
 
 const goToHomePage = () => {
-  router.push('/1591');
+  router.push('/');
 };
 
 const billingMenu = [{ title: '月征费比较表' }];

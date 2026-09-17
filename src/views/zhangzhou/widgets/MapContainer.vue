@@ -6,6 +6,7 @@
 <script>
 import { createApp, nextTick } from 'vue'; // Vue 3
 import proj4 from 'proj4';
+import { ENABLE_1591_APIS } from '@/settings/apiSwitches.js';
 const pgis_img =
   'http://35.80.236.142:8888/admin-api/Maps/FJS_vc_shense_0_18_2/JointMap?service=GetImage&zoom={z}&col={x}&row={y}&ak=0620aae950f94394ba7c4164100aa50b';
 const pgis_img1 =
@@ -28,8 +29,8 @@ import trafficEventTagIcon from '@/assets/icon-warning_tag@2x.png';
 import warningGantryIcon from '@/assets/red-warning-gantry.png';
 import warningTollStationIcon from '@/assets/red-warning-tollstation@2x.png';
 
-// GeoJSON 文件路径（放在 public 下）
-const FUZHOU_GEOJSON_URL = '/350100_full.json';
+// 漳州市行政区 GeoJSON 文件路径（放在 public 下）
+const ZHANGZHOU_GEOJSON_URL = '/漳州市.json';
 const FUZHOU_GANTRY_HEX_WHERE =
   "gantry_hex in ('350135','340235','340D13','350D13','340D14','350D14','341704','351704','351703','341703','350239','340239','35023B','34023B','340D16','350D16','352B01','350235','342B01','340233','350233','340D27','350D27','350D25','340D25','340821','350821','340237','350237','351601','341601','35023D','34023F','35023F','34023D','340D11','350D11','350D0F','340D0F','350D0D','340409','340D0B','340D0D','342B03','350D07','350D09','352B03','340241','350232','340F0D','340135','340D09','350F0D','350F0F','340232','340137','340F0F','350D0B','350241','340D07','350137','350403','340403','35012F','340405','34012B','340D19','340401','350407','350401','350133','340D1B','35012D','34012F','35012B','34012D','350131','340131','340407','340133','350D19','350D1B','350405','340D1D','350D1D','34081F','340231','35081F','350D05','350D1F','340D05','34081D','340D03','35022F','35022B','340D01','34022B','340D20','350D03','350D01','350D20','34022D','34022F','340D1F','35022D','35081D','350231','340D23','350D23','340D21','350D21','350823','340827','350829','350827','340D17','340823','340829','340825','350D15','350825','340D15','350D17','342B05','352B05','35082B','34082B','340245','341807','340139','350F01','341801','351801','34180B','350F11','351805','340F15','341805','351803','350F15','35180B','351807','340F13','340F01','350139','340F11','340243','341803','350F13','350245','350243','34013A','35013A','34180D','35180D','351809','341809','350409','35040B','350863','350B17','340129','350129','340863','34040B','340B17','350225','34081B','350227','340819','350229','350819','340227','340229','340225','35081B','350242','350D22','34081A','35081A','350D06','340B26','34081C','35081C')";
 const FUZHOU_SERVICE_AREA_WHERE =
@@ -40,12 +41,12 @@ const FUZHOU_CAMERA_WHERE = "org_name LIKE '%福州%'";
 const FUZHOU_HIDDEN_CAMERA_GIDS = new Set(['34384', '34302', '32790']);
 const FUZHOU_VARIABLE_MESSAGE_SIGN_WHERE =
   "1=1 AND maint_stat LIKE '%福州%'";
-const FUZHOU_TRACK_CENTER = [119.4490115, 25.9421335];
-const FUZHOU_TRACK_BOUNDS = {
-  minLng: 118.38209,
-  maxLng: 120.515933,
-  minLat: 25.24989,
-  maxLat: 26.634377,
+const ZHANGZHOU_TRACK_CENTER = [117.567963, 24.370323];
+const ZHANGZHOU_TRACK_BOUNDS = {
+  minLng: 116.895719,
+  maxLng: 118.240207,
+  minLat: 23.528954,
+  maxLat: 25.211692,
 };
 const CHINA_BOUNDS = {
   minLng: 73,
@@ -123,8 +124,8 @@ export default {
         dotSpacing: 0.0036, // 圆点间距（越小越密）
         dotFlowSpeed: 0.00002, // 圆点流动速度（越小越慢）
       },
-      // 行政区 GeoJSON features（福州市各区县）
-      fuzhouFeatures: [],
+      // 行政区 GeoJSON features（漳州市各区县）
+      zhangzhouFeatures: [],
       // 用于“外暗内亮”的遮罩层
       dimLayer: null,
       polygonLocation: undefined,
@@ -399,9 +400,9 @@ export default {
         }
 
         this.jmap = new joint.JMap(container.id || this.mapId, {
-          // 将镜头初始化位置向左移动一些（经度减小），并稍微向上移动一点（纬度增加）
-          center: [119.2, 26.02],
-          zoom: 9.6, // 视角切到福州区域
+          // 初始化定位到漳州全域
+          center: [117.57, 24.37],
+          zoom: 9.2,
           maxZoom: 18, // 最大缩放
           minZoom: 9.2, // 最小缩放
 
@@ -521,22 +522,26 @@ export default {
         this.jmap.addLayer(this.warningTollStationLayer);
         this.resetPointLayerZIndex();
 
-        // ===== 修改开始：新增福州市外暗色遮罩图层 =====
+        // ===== 修改开始：新增漳州市外暗色遮罩图层 =====
         // 创建暗色遮罩图层（比边界线图层更靠上）
         const dimLayer = new joint.GraphicsLayer();
         this.jmap.addLayer(dimLayer);
         this.dimLayer = dimLayer;
         // ===== 修改结束 =====
 
-        // 加载福州行政区 GeoJSON 并绘制边界与遮罩
-        await this.loadFuzhouGeojson();
-        this.drawFuzhouBoundaryAndMask();
+        // 加载漳州行政区 GeoJSON 并绘制边界与遮罩
+        await this.loadZhangzhouGeojson();
+        this.drawZhangzhouBoundaryAndMask();
         this.syncTrackPolylines();
-        await this.loadGantryFeatures();
-        await this.loadServiceFeatures();
-        await this.loadTollStationFeatures();
-        await this.loadCameraFeatures();
-        await this.loadVariableMessageSignFeatures();
+        if (ENABLE_1591_APIS) {
+          await this.loadGantryFeatures();
+          await this.loadServiceFeatures();
+          await this.loadTollStationFeatures();
+          await this.loadCameraFeatures();
+          await this.loadVariableMessageSignFeatures();
+        } else {
+          console.info('1591 地图点位接口暂时停用');
+        }
         this.bringPointLayerTypeToTop('gantry');
         // 福州页交通事件改为使用 getTrafficFromChangwei 后，恢复事件点位上图。
         this.syncTrafficEventMarkers();
@@ -680,31 +685,31 @@ export default {
     },
 
     /**
-     * 加载福州市行政区 GeoJSON 数据
+     * 加载漳州市行政区 GeoJSON 数据
      */
-    async loadFuzhouGeojson() {
+    async loadZhangzhouGeojson() {
       try {
-        const res = await fetch(FUZHOU_GEOJSON_URL);
+        const res = await fetch(ZHANGZHOU_GEOJSON_URL);
         if (!res.ok) {
-          console.error('加载福州 GeoJSON 失败:', res.statusText);
+          console.error('加载漳州 GeoJSON 失败:', res.statusText);
           return;
         }
         const geojson = await res.json();
         if (!geojson || !Array.isArray(geojson.features)) {
-          console.error('福州 GeoJSON 数据格式不正确:', geojson);
+          console.error('漳州 GeoJSON 数据格式不正确:', geojson);
           return;
         }
-        this.fuzhouFeatures = geojson.features;
+        this.zhangzhouFeatures = geojson.features;
       } catch (e) {
-        console.error('请求福州 GeoJSON 发生错误:', e);
+        console.error('请求漳州 GeoJSON 发生错误:', e);
       }
     },
 
     /**
-     * 绘制福州边界线，并叠加外部暗色遮罩
+     * 绘制漳州边界线，并叠加外部暗色遮罩
      */
-    drawFuzhouBoundaryAndMask() {
-      if (!this.jmap || !this.layer2 || !this.fuzhouFeatures.length) {
+    drawZhangzhouBoundaryAndMask() {
+      if (!this.jmap || !this.layer2 || !this.zhangzhouFeatures.length) {
         return;
       }
 
@@ -719,9 +724,9 @@ export default {
       }
 
       // -----------------------------
-      // 1. 绘制福州各区县边界线
+      // 1. 绘制漳州各区县边界线
       // -----------------------------
-      const features = this.fuzhouFeatures;
+      const features = this.zhangzhouFeatures;
 
       // 用于后续计算包络矩形
       let minLng = Infinity;
@@ -730,7 +735,7 @@ export default {
       let maxLat = -Infinity;
 
       // 收集环线用于“外暗内亮”反向遮罩
-      const fuzhouOuterRings = [];
+      const zhangzhouOuterRings = [];
       const boundaryLineDefs = [];
 
       const closeRing = (ring) => {
@@ -777,7 +782,7 @@ export default {
             if (lat > maxLat) maxLat = lat;
           });
 
-          fuzhouOuterRings.push(normalizedRing);
+          zhangzhouOuterRings.push(normalizedRing);
 
           boundaryLineDefs.push({ ring: normalizedRing, props });
         };
@@ -817,13 +822,13 @@ export default {
             });
             targetLayer.add(graphic);
           } catch (error) {
-            console.error('添加福州边界线失败:', error);
+            console.error('添加漳州边界线失败:', error);
           }
         });
       };
 
       // -----------------------------
-      // 2. 叠加“福州外暗色”遮罩
+      // 2. 叠加“漳州外暗色”遮罩
       // -----------------------------
       if (!dimLayer) return;
       if (
@@ -836,7 +841,7 @@ export default {
       }
 
       // 优先使用“反向多环”精确遮罩
-      // 优先尝试：外环 + 福州边界洞（精确到行政区边界）
+      // 优先尝试：外环 + 漳州边界洞（精确到行政区边界）
       try {
         const worldOuterRing = [
           [-180, -85],
@@ -850,7 +855,7 @@ export default {
           getSignedArea(worldOuterRing) < 0
             ? worldOuterRing
             : [...worldOuterRing].reverse();
-        const normalizedHoleRings = fuzhouOuterRings.map((ring) =>
+        const normalizedHoleRings = zhangzhouOuterRings.map((ring) =>
           getSignedArea(ring) > 0 ? ring : [...ring].reverse()
         );
 
@@ -1129,7 +1134,7 @@ export default {
 
       const sample = points.slice(0, 8);
       let validCount = 0;
-      let fuzhouCount = 0;
+      let zhangzhouCount = 0;
       let chinaCount = 0;
       let totalDistancePenalty = 0;
 
@@ -1144,15 +1149,15 @@ export default {
         if (this.isPointInsideBounds(converted, CHINA_BOUNDS)) {
           chinaCount += 1;
         }
-        if (this.isPointInsideBounds(converted, FUZHOU_TRACK_BOUNDS)) {
-          fuzhouCount += 1;
+        if (this.isPointInsideBounds(converted, ZHANGZHOU_TRACK_BOUNDS)) {
+          zhangzhouCount += 1;
         }
 
         const lng = Number(converted[0]);
         const lat = Number(converted[1]);
         totalDistancePenalty += Math.hypot(
-          lng - FUZHOU_TRACK_CENTER[0],
-          lat - FUZHOU_TRACK_CENTER[1]
+          lng - ZHANGZHOU_TRACK_CENTER[0],
+          lat - ZHANGZHOU_TRACK_CENTER[1]
         );
       });
 
@@ -1161,7 +1166,7 @@ export default {
       return (
         validCount * 20 +
         chinaCount * 10 +
-        fuzhouCount * 50 -
+        zhangzhouCount * 50 -
         totalDistancePenalty
       );
     },

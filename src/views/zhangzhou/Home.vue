@@ -25,7 +25,7 @@
             <span>收费报表</span>
           </div>
         </div>
-        <span class="header-title">福州数智云系统</span>
+        <span class="header-title">漳州数智云系统</span>
       </div>
     </div>
     <div class="bg-left"></div>
@@ -477,9 +477,13 @@ const trafficEventCardRef = ref(null);
 const trafficEventCardHeaderRef = ref(null);
 const realTimeTrafficCardRef = ref(null);
 const sectionVehicleCardRef = ref(null);
-const isHomePage = computed(() => route.path === "/1591");
+const isHomePage = computed(
+  () => route.path === "/" || route.path === "/1591",
+);
 const isBillingReportsPage = computed(
-  () => route.path === "/1591/billing-reports"
+  () =>
+    route.path === "/1591/billing-reports" ||
+    route.path === "/billing-reports",
 );
 
 /**
@@ -2852,11 +2856,6 @@ onUnmounted(() => {
   clearNotificationTimers();
   hideMapSearchNotice();
 });
-// 跳转到莆田数智云页面
-const goToPutianSmartCloud = () => {
-  // 功能：跳转至莆田数智云页面路由。
-  router.push("/putian-smart-cloud");
-};
 const goToBillingReports = () => {
   // 功能：跳转至收费报表页面路由。
   router.push("/1591/billing-reports");
