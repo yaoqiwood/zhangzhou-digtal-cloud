@@ -171,7 +171,7 @@ const getValueByIndexAndKeys = (sourceData, index, keyGroups = []) => {
 const fetchData = async () => {
   try {
     const response = await http.get(FUZHOU_API_URLS.fee.getFeeInfo, {
-      origid: REGION_IDS.FUZHOU,
+      origid: REGION_IDS.ZHANGZHOU,
     });
     const result = response;
 

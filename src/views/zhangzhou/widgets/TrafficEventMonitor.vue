@@ -416,7 +416,7 @@ const fetchTrafficEventData = async (options = {}) => {
     const response = await http.get(
       API_URLS.putian_highway.getTrafficEventInfo,
       {
-        origid: 1591,
+        origid: REGION_IDS.ZHANGZHOU,
       }
     );
 

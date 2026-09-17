@@ -277,7 +277,7 @@ const buildQueryRange = (monthValue) => {
   return {
     startTime: `${year}-${month}-01 00:00:00`,
     stopTime: `${year}-${month}-${String(lastDay).padStart(2, '0')} 23:59:59`,
-    belongOrg: '1591',
+    belongOrg: '1599',
   };
 };
 

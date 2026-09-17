@@ -1,3 +1,2 @@
-// 1591（原福州）接口临时开关。
-// 漳州接口接入完成后改为 true 即可恢复相关请求。
-export const ENABLE_1591_APIS = false;
+// 1599（漳州）接口开关。
+export const ENABLE_1599_APIS = true;

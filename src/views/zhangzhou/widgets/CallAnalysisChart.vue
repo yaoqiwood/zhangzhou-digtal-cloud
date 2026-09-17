@@ -63,7 +63,7 @@ const getTrafficCaseInfo = async (type = 'day') => {
   try {
     const data = await http.get(trafficCaseInfoUrl, {
       ...timeRange,
-      origid: REGION_IDS.FUZHOU,
+      origid: REGION_IDS.ZHANGZHOU,
     });
     if (data && Array.isArray(data)) {
       processCallData(data);
@@ -81,7 +81,7 @@ const getTrafficTypeInfo = async (type = 'day') => {
   try {
     const data = await http.get(trafficTypeInfoUrl, {
       ...timeRange,
-      origid: REGION_IDS.FUZHOU,
+      origid: REGION_IDS.ZHANGZHOU,
     });
     if (data && Array.isArray(data)) {
       processTrafficTypeData(data);

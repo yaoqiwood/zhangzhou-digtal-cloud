@@ -250,7 +250,7 @@ const getHighwayFeeInfo = async () => {
   try {
     const res = await http.get(feeUrl, {
       nowTime: getTimeMinusMinutes(), // 使用公共方法获取时间
-      origid: REGION_IDS.FUZHOU, // 使用福州地区编号
+      origid: REGION_IDS.ZHANGZHOU,
       type: REQUEST_TYPES.FEE_INFO, // 使用常量
     });
     // 假设后端返回的总金额是元为单位
@@ -275,7 +275,7 @@ const getStationRank = async () => {
   try {
     const res = await http.get(stationRankUrl, {
       nowTime: getTimeMinusMinutes(), // 使用公共方法获取时间
-      origid: REGION_IDS.FUZHOU, // 使用福州地区编号
+      origid: REGION_IDS.ZHANGZHOU,
       type: REQUEST_TYPES.FEE_INFO, // 使用常量
     });
     // 假设后端返回的是一个数组

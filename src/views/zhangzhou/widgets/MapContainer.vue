@@ -6,7 +6,7 @@
 <script>
 import { createApp, nextTick } from 'vue'; // Vue 3
 import proj4 from 'proj4';
-import { ENABLE_1591_APIS } from '@/settings/apiSwitches.js';
+import { ENABLE_1599_APIS } from '@/settings/apiSwitches.js';
 const pgis_img =
   'http://35.80.236.142:8888/admin-api/Maps/FJS_vc_shense_0_18_2/JointMap?service=GetImage&zoom={z}&col={x}&row={y}&ak=0620aae950f94394ba7c4164100aa50b';
 const pgis_img1 =
@@ -533,14 +533,14 @@ export default {
         await this.loadZhangzhouGeojson();
         this.drawZhangzhouBoundaryAndMask();
         this.syncTrackPolylines();
-        if (ENABLE_1591_APIS) {
+        if (ENABLE_1599_APIS) {
           await this.loadGantryFeatures();
           await this.loadServiceFeatures();
           await this.loadTollStationFeatures();
           await this.loadCameraFeatures();
           await this.loadVariableMessageSignFeatures();
         } else {
-          console.info('1591 地图点位接口暂时停用');
+          console.info('1599 地图点位接口暂时停用');
         }
         this.bringPointLayerTypeToTop('gantry');
         // 福州页交通事件改为使用 getTrafficFromChangwei 后，恢复事件点位上图。

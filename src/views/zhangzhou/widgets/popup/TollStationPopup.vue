@@ -332,7 +332,7 @@ export default {
     async fetchStationData() {
       try {
         const response = await http.get(this.url, {
-          origid: REGION_IDS.FUZHOU,
+          origid: REGION_IDS.ZHANGZHOU,
         });
         if (response) {
           this.stationData = response;
@@ -372,7 +372,7 @@ export default {
             : FUZHOU_API_URLS.fee.getExStationFlow;
         const response = await http.get(apiUrl, {
           flagId: this.currentCode,
-          origid: REGION_IDS.FUZHOU,
+          origid: REGION_IDS.ZHANGZHOU,
         });
         if (response && response.length > 0) {
           const flowItem = response[0];
@@ -391,11 +391,11 @@ export default {
         const [enResponse, exResponse] = await Promise.all([
           http.get(FUZHOU_API_URLS.fee.getEnStationFlow, {
             flagId: this.currentCode,
-            origid: REGION_IDS.FUZHOU,
+            origid: REGION_IDS.ZHANGZHOU,
           }),
           http.get(FUZHOU_API_URLS.fee.getExStationFlow, {
             flagId: this.currentCode,
-            origid: REGION_IDS.FUZHOU,
+            origid: REGION_IDS.ZHANGZHOU,
           }),
         ]);
         this.enCharData = enResponse || [];
@@ -415,11 +415,11 @@ export default {
         const [enResponse, exResponse] = await Promise.all([
           http.get(API_URLS.putian_highway.getPredictFlow, {
             flagid: this.buildPredictFlagId('in'),
-            origid: REGION_IDS.FUZHOU,
+          origid: REGION_IDS.ZHANGZHOU,
           }),
           http.get(API_URLS.putian_highway.getPredictFlow, {
             flagid: this.buildPredictFlagId('out'),
-            origid: REGION_IDS.FUZHOU,
+          origid: REGION_IDS.ZHANGZHOU,
           }),
         ]);
 

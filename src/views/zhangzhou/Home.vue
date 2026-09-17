@@ -853,7 +853,7 @@ const buildRoadConditionVideoColumnsParams = async (detailData) => {
   try {
     const response = await http.get(FUZHOU_API_URLS.video.getVideoListByFlags, {
       flagid,
-      origid: REGION_IDS.FUZHOU,
+      origid: REGION_IDS.ZHANGZHOU,
     });
     const cameraNums = normalizeVideoListByFlags(response)
       .map((camera) => String(camera?.cameraNum || "").trim())
@@ -1235,7 +1235,7 @@ const fetchTrafficJamTrackPolylines = async (trafficData, requestId) => {
     const routeRaw = await http.get(FUZHOU_API_URLS.traffic.setPositionByNode, {
       fromnode: nodes.fromnode,
       tonode: nodes.tonode,
-      origid: REGION_IDS.FUZHOU,
+      origid: REGION_IDS.ZHANGZHOU,
     });
     if (requestId !== trafficJamRouteRequestId.value) return;
 
@@ -2518,10 +2518,10 @@ const fetchRoadConditionData = async (options = {}) => {
       // 获取实时路况列表和路况标记数据，供通知比对和地图标记展示使用。
       await Promise.allSettled([
         http.get(API_URLS.putian_highway.getCongestionEventList, {
-          origid: REGION_IDS.FUZHOU,
+          origid: REGION_IDS.ZHANGZHOU,
         }),
         http.get(API_URLS.putian_highway.getAllPositionByNode, {
-          origid: REGION_IDS.FUZHOU,
+          origid: REGION_IDS.ZHANGZHOU,
         }),
       ]);
     if (roadConditionResult.status !== "fulfilled") {
@@ -2569,10 +2569,10 @@ const fetchSectionVehicleManagementData = async () => {
 
     const [sectionMgmtListRaw, vehicleListRaw] = await Promise.all([
       http.get(API_URLS.putian_highway.getSectionMgmtList, {
-        origid: REGION_IDS.FUZHOU,
+        origid: REGION_IDS.ZHANGZHOU,
       }),
       http.get(API_URLS.putian_highway.getVehicleList, {
-        origid: REGION_IDS.FUZHOU,
+        origid: REGION_IDS.ZHANGZHOU,
       }),
     ]);
     const sectionMgmtList = normalizeSectionMgmtList(sectionMgmtListRaw);
@@ -2593,7 +2593,7 @@ const fetchExceptionSectionData = async () => {
   try {
     // 使用 http.get 方法获取特情区段数据
     const data = await http.get(FUZHOU_API_URLS.specialEvent.getTeQingSection, {
-      origid: REGION_IDS.FUZHOU,
+      origid: REGION_IDS.ZHANGZHOU,
     });
     exceptionSectionData.value = data;
     // console.log(exceptionSectionData.value);

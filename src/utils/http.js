@@ -1,14 +1,14 @@
 import request from './request';
 import mockService from './mockService';
-import { ENABLE_1591_APIS } from '../settings/apiSwitches.js';
+import { ENABLE_1599_APIS } from '../settings/apiSwitches.js';
 
 const ORG_ID_KEYS = ['origid', 'orgid', 'orgId', 'belongOrg', 'belongOrgId'];
 
-const isDisabled1591Request = (payload = {}) =>
-  !ENABLE_1591_APIS &&
-  ORG_ID_KEYS.some((key) => String(payload?.[key] ?? '').trim() === '1591');
+const isDisabled1599Request = (payload = {}) =>
+  !ENABLE_1599_APIS &&
+  ORG_ID_KEYS.some((key) => String(payload?.[key] ?? '').trim() === '1599');
 
-const disabled1591Response = () => Promise.resolve([]);
+const disabled1599Response = () => Promise.resolve([]);
 
 /**
  * 检查 URL 是否为完整的 URL
@@ -27,8 +27,8 @@ function isFullUrl(url) {
  * @returns {Promise}
  */
 export function get(url, params = {}, config = {}) {
-  // 1591 接口暂时停用，保留调用结构，后续打开开关即可恢复。
-  if (isDisabled1591Request(params)) return disabled1591Response();
+  // 1599 接口可通过开关临时停用，保留调用结构便于后续切换。
+  if (isDisabled1599Request(params)) return disabled1599Response();
 
   // 检查是否有mock数据
   const mockData = mockService.getMockData(url);
@@ -77,8 +77,8 @@ export function get(url, params = {}, config = {}) {
  * @returns {Promise}
  */
 export function post(url, data = {}, config = {}) {
-  // 1591 接口暂时停用，保留调用结构，后续打开开关即可恢复。
-  if (isDisabled1591Request(data)) return disabled1591Response();
+  // 1599 接口可通过开关临时停用，保留调用结构便于后续切换。
+  if (isDisabled1599Request(data)) return disabled1599Response();
 
   // 如果是完整的 URL，直接使用，不与 baseURL 拼接
   // 检查是否有mock数据
@@ -115,8 +115,8 @@ export function post(url, data = {}, config = {}) {
  * @returns {Promise}
  */
 export function put(url, data = {}, config = {}) {
-  // 1591 接口暂时停用，保留调用结构，后续打开开关即可恢复。
-  if (isDisabled1591Request(data)) return disabled1591Response();
+  // 1599 接口可通过开关临时停用，保留调用结构便于后续切换。
+  if (isDisabled1599Request(data)) return disabled1599Response();
 
   // 检查是否有mock数据
   const mockData = mockService.getMockData(url);
@@ -164,8 +164,8 @@ export function put(url, data = {}, config = {}) {
  * @returns {Promise}
  */
 export function del(url, params = {}, config = {}) {
-  // 1591 接口暂时停用，保留调用结构，后续打开开关即可恢复。
-  if (isDisabled1591Request(params)) return disabled1591Response();
+  // 1599 接口可通过开关临时停用，保留调用结构便于后续切换。
+  if (isDisabled1599Request(params)) return disabled1599Response();
 
   // 检查是否有mock数据
   const mockData = mockService.getMockData(url);

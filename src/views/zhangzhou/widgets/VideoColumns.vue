@@ -246,7 +246,7 @@ const loadVideoUrlsForPage = async (page = 1, seq = requestSeq.value) => {
       try {
         const urlResponse = await get(FUZHOU_API_URLS.video.getVideoUrl, {
           cameraNum: video.cameraNum,
-          origid: REGION_IDS.FUZHOU,
+          origid: REGION_IDS.ZHANGZHOU,
         });
         // await 返回后再次校验，防止请求过程中用户已经切换详情。
         if (seq !== requestSeq.value) return;
@@ -299,7 +299,7 @@ const loadVideoList = async () => {
     if (eventVideoParams) {
       const response = await get(FUZHOU_API_URLS.video.getVideoList, {
         ...eventVideoParams,
-        origid: REGION_IDS.FUZHOU,
+        origid: REGION_IDS.ZHANGZHOU,
       });
       if (seq !== requestSeq.value) return;
 
@@ -338,7 +338,7 @@ const loadVideoList = async () => {
         get(FUZHOU_API_URLS.video.getVideoList, {
           ...baseParams,
           roadCode: item.roadCode,
-          origid: REGION_IDS.FUZHOU,
+          origid: REGION_IDS.ZHANGZHOU,
         })
       )
     );

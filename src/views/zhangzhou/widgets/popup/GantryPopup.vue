@@ -129,7 +129,7 @@ export default {
           API_URLS.putian_highway.getGantryBasicInfo,
           {
             flagId: this.data.gantry_hex,
-            origid: REGION_IDS.FUZHOU,
+            origid: REGION_IDS.ZHANGZHOU,
           }
         );
 
@@ -155,7 +155,7 @@ export default {
 
         const response = await http.get(FUZHOU_API_URLS.gantry.getGantryFlowBar, {
           gantryId,
-          origid: REGION_IDS.FUZHOU,
+          origid: REGION_IDS.ZHANGZHOU,
         });
 
         let list = [];
@@ -348,7 +348,7 @@ export default {
 
         const response = await http.get(API_URLS.putian_highway.getPredictFlow, {
           flagid,
-          origid: REGION_IDS.FUZHOU,
+          origid: REGION_IDS.ZHANGZHOU,
         });
         this.predictFlowData = this.normalizePredictFlowData(response);
       } catch (error) {

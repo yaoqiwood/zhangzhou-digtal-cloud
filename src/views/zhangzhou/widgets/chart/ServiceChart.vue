@@ -247,7 +247,7 @@ const fetchServiceWindowInfo = async (data) => {
 
     const response = await http.get(
       FUZHOU_API_URLS.serviceArea.getServiceWindowInfo,
-      { serviceAreaCode, origid: REGION_IDS.FUZHOU }
+      { serviceAreaCode, origid: REGION_IDS.ZHANGZHOU }
     );
 
     console.log('获取到的服务区窗口信息:', response);

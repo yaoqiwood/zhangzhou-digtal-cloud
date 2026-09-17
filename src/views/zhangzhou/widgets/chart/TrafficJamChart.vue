@@ -77,7 +77,7 @@ const fetchEventData = async () => {
     const response = await http.get(FUZHOU_API_URLS.traffic.getEventData, {
       flags: props.data.flagId,
       nowTime: getNow(),
-      origid: REGION_IDS.FUZHOU,
+      origid: REGION_IDS.ZHANGZHOU,
     });
     console.log({
       flags: props.data.flagId,

@@ -154,7 +154,7 @@ const lineTrackStyle = computed(() => ({
 const fetchTrafficFlowData = async () => {
   try {
     const res = await http.get(API_URLS.putian_highway.getRealTimeTrafficFlow, {
-      origid: REGION_IDS.FUZHOU,
+      origid: REGION_IDS.ZHANGZHOU,
     });
     const data = res?.[0];
     if (!data) {

@@ -241,7 +241,7 @@ export default {
 
         const response = await http.get(
           FUZHOU_API_URLS.serviceArea.getServiceAreaBaseInfo,
-          { serviceAreaCode, origid: REGION_IDS.FUZHOU }
+          { serviceAreaCode, origid: REGION_IDS.ZHANGZHOU }
         );
 
         // console.log('获取到的服务区基本信息:', response);

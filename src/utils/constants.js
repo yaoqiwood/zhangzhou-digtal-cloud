@@ -6,8 +6,10 @@
 export const REGION_IDS = {
   // 莆田地区 ID
   PUTIAN: 1594,
-  // 福州地区 ID
-  FUZHOU: 1591
+  // 漳州地区 ID
+  ZHANGZHOU: 1599,
+  // 福州地区 ID（保留给未迁移的旧页面）
+  FUZHOU: 1591,
 };
 
 /**

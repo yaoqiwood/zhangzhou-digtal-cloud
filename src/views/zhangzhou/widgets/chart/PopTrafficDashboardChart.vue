@@ -292,7 +292,7 @@ const fetchGantryFlowData = async (data) => {
 
     const response = await http.get(
       FUZHOU_API_URLS.gantry.getGantryFlowBar,
-      { gantryId, origid: REGION_IDS.FUZHOU } // 根据实际API需求传递参数
+      { gantryId, origid: REGION_IDS.ZHANGZHOU } // 根据实际API需求传递参数
     );
     // console.log(gantryId);
 

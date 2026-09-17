@@ -257,7 +257,7 @@ const fetchRetentionInfo = async (passid) => {
     const response = await http.get(FUZHOU_API_URLS.specialEvent.getRetentionInfo, {
       passid,
       nowTime,
-      origid: REGION_IDS.FUZHOU,
+      origid: REGION_IDS.ZHANGZHOU,
     });
 
     // 处理返回的数据
@@ -312,7 +312,7 @@ const fetchTeQingChartData = async (plate) => {
       FUZHOU_API_URLS.specialEvent.getTeQingChartByPlate,
       {
         plate,
-        origid: REGION_IDS.FUZHOU,
+        origid: REGION_IDS.ZHANGZHOU,
       }
     );
 

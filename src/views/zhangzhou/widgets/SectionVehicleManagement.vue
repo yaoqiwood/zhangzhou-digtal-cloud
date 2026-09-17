@@ -621,7 +621,7 @@ export default {
         const data = await http.get(FUZHOU_API_URLS.traffic.setPositionByNode, {
           fromnode: nodes.fromnode,
           tonode: nodes.tonode,
-          origid: REGION_IDS.FUZHOU,
+          origid: REGION_IDS.ZHANGZHOU,
         });
         const polylineData = this.normalizeSectionPolylineResponse(data);
         this.$emit('update-polylines', polylineData);
@@ -662,7 +662,7 @@ export default {
         passid,
         errorKey,
         nowTime,
-        origid: REGION_IDS.FUZHOU,
+        origid: REGION_IDS.ZHANGZHOU,
       });
     },
     async fetchAndEmitVehicleTrack(row, type, options = {}) {
@@ -821,7 +821,7 @@ export default {
       try {
         const data = await http.get(FUZHOU_API_URLS.specialEvent.getTeQingList, {
           flagId: flagId,
-          origid: REGION_IDS.FUZHOU,
+        origid: REGION_IDS.ZHANGZHOU,
         });
         this.exceptionDetailList = data;
         this.isLoading = false;
