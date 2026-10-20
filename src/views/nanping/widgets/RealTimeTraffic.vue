@@ -317,7 +317,7 @@ const fetchTrafficThresholds = async (flagIds = []) => {
       const data = await http.get(FUZHOU_API_URLS.threshold.getThreadholdInfo, {
         fromnode: nodes.fromnode,
         tonode: nodes.tonode,
-        origid: REGION_IDS.ZHANGZHOU,
+        origid: REGION_IDS.NANPING,
       });
       return [flagId, normalizeThresholdInfo(data)];
     })
@@ -541,7 +541,7 @@ const openDetailPopup = async (item) => {
   try {
     const response = await http.get(FUZHOU_API_URLS.video.getVideoListByFlags, {
       flagid,
-      origid: REGION_IDS.ZHANGZHOU,
+      origid: REGION_IDS.NANPING,
     });
     const cameraNums = normalizeVideoListByFlags(response)
       .map((camera) => String(camera?.cameraNum || '').trim())
@@ -613,12 +613,12 @@ const fetchTrafficData = async (options = {}) => {
   try {
     // 分开请求，避免单个接口失败导致全部统计异常
     const countTask = http.get(FUZHOU_API_URLS.traffic.getPTTopoCount, {
-      origid: REGION_IDS.ZHANGZHOU,
+      origid: REGION_IDS.NANPING,
     });
     const jamTask = http.get(FUZHOU_API_URLS.traffic.getJamRoads, {
       nowTime: getNow(),
       eventType: '0,1',
-      origid: REGION_IDS.ZHANGZHOU,
+      origid: REGION_IDS.NANPING,
     });
     // 缓行区段列表由 Home.vue 统一请求并通过 props 下发，
     // 这里不再重复触发 congestionEventList，避免同一刷新链路内重复请求。

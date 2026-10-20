@@ -419,7 +419,7 @@ const fetchRetentionInfo = async (passid) => {
     const response = await http.get(FUZHOU_API_URLS.specialEvent.getRetentionInfo, {
       passid,
       nowTime,
-      origid: REGION_IDS.ZHANGZHOU,
+      origid: REGION_IDS.NANPING,
     });
 
     // 处理返回的数据

@@ -1,23 +1,23 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import ZhangzhouHome from '../views/zhangzhou/Home.vue';
+import NanpingHome from '../views/nanping/Home.vue';
 
 const routes = [
   {
     path: '/',
     name: 'Home',
-    component: ZhangzhouHome,
+    component: NanpingHome,
     meta: {
       scaleScreen: true,
-      title: '漳州数智云',
+      title: '南平数智云',
     },
   },
   {
-    path: '/1591',
-    name: 'ZhangzhouHome',
-    component: ZhangzhouHome,
+    path: '/1599',
+    name: 'NanpingHome',
+    component: NanpingHome,
     meta: {
       scaleScreen: true,
-      title: '漳州数智云',
+      title: '南平数智云',
     },
   },
   // {
@@ -31,14 +31,14 @@ const routes = [
     component: () => import('../views/ApiTester.vue'),
   },
   {
-    path: '/1591/billing-reports',
-    name: 'ZhangzhouBillingReports',
-    component: () => import('../views/zhangzhou/pages/BillingReports.vue'),
+    path: '/1599/billing-reports',
+    name: 'NanpingBillingReports',
+    component: () => import('../views/nanping/pages/BillingReports.vue'),
   },
   {
     path: '/billing-reports',
     name: 'BillingReports',
-    component: () => import('../views/zhangzhou/pages/BillingReports.vue'),
+    component: () => import('../views/nanping/pages/BillingReports.vue'),
   },
 ];
 
@@ -48,7 +48,7 @@ const router = createRouter({
 });
 
 router.afterEach((to) => {
-  document.title = to.meta.title || '漳州数智云';
+  document.title = to.meta.title || '南平数智云';
 });
 
 export default router;

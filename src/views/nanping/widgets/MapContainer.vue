@@ -29,24 +29,24 @@ import trafficEventTagIcon from '@/assets/icon-warning_tag@2x.png';
 import warningGantryIcon from '@/assets/red-warning-gantry.png';
 import warningTollStationIcon from '@/assets/red-warning-tollstation@2x.png';
 
-// 漳州市行政区 GeoJSON 文件路径（放在 public 下）
-const ZHANGZHOU_GEOJSON_URL = '/漳州市.json';
+// 南平市行政区 GeoJSON 文件路径（放在 public 下）
+const NANPING_GEOJSON_URL = '/南平市.json';
 const FUZHOU_GANTRY_HEX_WHERE =
   "gantry_hex in ('350135','340235','340D13','350D13','340D14','350D14','341704','351704','351703','341703','350239','340239','35023B','34023B','340D16','350D16','352B01','350235','342B01','340233','350233','340D27','350D27','350D25','340D25','340821','350821','340237','350237','351601','341601','35023D','34023F','35023F','34023D','340D11','350D11','350D0F','340D0F','350D0D','340409','340D0B','340D0D','342B03','350D07','350D09','352B03','340241','350232','340F0D','340135','340D09','350F0D','350F0F','340232','340137','340F0F','350D0B','350241','340D07','350137','350403','340403','35012F','340405','34012B','340D19','340401','350407','350401','350133','340D1B','35012D','34012F','35012B','34012D','350131','340131','340407','340133','350D19','350D1B','350405','340D1D','350D1D','34081F','340231','35081F','350D05','350D1F','340D05','34081D','340D03','35022F','35022B','340D01','34022B','340D20','350D03','350D01','350D20','34022D','34022F','340D1F','35022D','35081D','350231','340D23','350D23','340D21','350D21','350823','340827','350829','350827','340D17','340823','340829','340825','350D15','350825','340D15','350D17','342B05','352B05','35082B','34082B','340245','341807','340139','350F01','341801','351801','34180B','350F11','351805','340F15','341805','351803','350F15','35180B','351807','340F13','340F01','350139','340F11','340243','341803','350F13','350245','350243','34013A','35013A','34180D','35180D','351809','341809','350409','35040B','350863','350B17','340129','350129','340863','34040B','340B17','350225','34081B','350227','340819','350229','350819','340227','340229','340225','35081B','350242','350D22','34081A','35081A','350D06','340B26','34081C','35081C')";
 const FUZHOU_SERVICE_AREA_WHERE =
   "(name LIKE '%长乐服务区%' OR name LIKE '%龙田服务区%' OR name LIKE '%关东服务区%' OR name LIKE '%洋里服务区%' OR name LIKE '%桂湖服务区%' OR name LIKE '%上街服务区%' OR name LIKE '%青口服务区%' OR name LIKE '%连江服务区%' OR name LIKE '%大往服务区%' OR name LIKE '%白樟服务区%' OR name LIKE '%竹岐服务区%' OR name LIKE '%三山服务区%' OR name LIKE '%青云山服务区%' OR name LIKE '%透堡服务区%' OR name LIKE '%罗源服务区%' OR name LIKE '%梧桐服务区%')";
 const FUZHOU_TOLL_STATION_WHERE =
   "code in ('6608','6607','6606','6803','6802','6805','6804','6801','3006','3004','3001','3002','3005','3003','2708','2710','2709','2703','2902','2903','2702','2904','2705','2901','2905','2701','2707','2704','2706','2715','4303','4302','4304','2711','2712','4301','9404','9403','9401','9402','6706','2802','2803','6707','2716','2713','6601','6603','6605','6604','6602','6705','6701','6704','6702','6709','6710','6703','6708','4305')";
-const FUZHOU_CAMERA_WHERE = "org_name LIKE '%福州%'";
+const FUZHOU_CAMERA_WHERE = "org_name LIKE '%南平%'";
 const FUZHOU_HIDDEN_CAMERA_GIDS = new Set(['34384', '34302', '32790']);
 const FUZHOU_VARIABLE_MESSAGE_SIGN_WHERE =
-  "1=1 AND maint_stat LIKE '%福州%'";
-const ZHANGZHOU_TRACK_CENTER = [117.567963, 24.370323];
-const ZHANGZHOU_TRACK_BOUNDS = {
-  minLng: 116.895719,
-  maxLng: 118.240207,
-  minLat: 23.528954,
-  maxLat: 25.211692,
+  "1=1 AND maint_stat LIKE '%南平%'";
+const NANPING_TRACK_CENTER = [118.1393645,27.2780755];
+const NANPING_TRACK_BOUNDS = {
+  "minLng": 117.003407,
+  "maxLng": 119.275322,
+  "minLat": 26.243435,
+  "maxLat": 28.312716
 };
 const CHINA_BOUNDS = {
   minLng: 73,
@@ -124,8 +124,8 @@ export default {
         dotSpacing: 0.0036, // 圆点间距（越小越密）
         dotFlowSpeed: 0.00002, // 圆点流动速度（越小越慢）
       },
-      // 行政区 GeoJSON features（漳州市各区县）
-      zhangzhouFeatures: [],
+      // 行政区 GeoJSON features（南平市各区县）
+      nanpingFeatures: [],
       // 用于“外暗内亮”的遮罩层
       dimLayer: null,
       polygonLocation: undefined,
@@ -400,8 +400,8 @@ export default {
         }
 
         this.jmap = new joint.JMap(container.id || this.mapId, {
-          // 初始化定位到漳州全域
-          center: [117.57, 24.37],
+          // 初始化定位到南平全域
+          center: [118.1393645,27.2780755],
           zoom: 9.2,
           maxZoom: 18, // 最大缩放
           minZoom: 9.2, // 最小缩放
@@ -522,16 +522,16 @@ export default {
         this.jmap.addLayer(this.warningTollStationLayer);
         this.resetPointLayerZIndex();
 
-        // ===== 修改开始：新增漳州市外暗色遮罩图层 =====
+        // ===== 修改开始：新增南平市外暗色遮罩图层 =====
         // 创建暗色遮罩图层（比边界线图层更靠上）
         const dimLayer = new joint.GraphicsLayer();
         this.jmap.addLayer(dimLayer);
         this.dimLayer = dimLayer;
         // ===== 修改结束 =====
 
-        // 加载漳州行政区 GeoJSON 并绘制边界与遮罩
-        await this.loadZhangzhouGeojson();
-        this.drawZhangzhouBoundaryAndMask();
+        // 加载南平行政区 GeoJSON 并绘制边界与遮罩
+        await this.loadNanpingGeojson();
+        this.drawNanpingBoundaryAndMask();
         this.syncTrackPolylines();
         if (ENABLE_1599_APIS) {
           await this.loadGantryFeatures();
@@ -685,31 +685,31 @@ export default {
     },
 
     /**
-     * 加载漳州市行政区 GeoJSON 数据
+     * 加载南平市行政区 GeoJSON 数据
      */
-    async loadZhangzhouGeojson() {
+    async loadNanpingGeojson() {
       try {
-        const res = await fetch(ZHANGZHOU_GEOJSON_URL);
+        const res = await fetch(NANPING_GEOJSON_URL);
         if (!res.ok) {
-          console.error('加载漳州 GeoJSON 失败:', res.statusText);
+          console.error('加载南平 GeoJSON 失败:', res.statusText);
           return;
         }
         const geojson = await res.json();
         if (!geojson || !Array.isArray(geojson.features)) {
-          console.error('漳州 GeoJSON 数据格式不正确:', geojson);
+          console.error('南平 GeoJSON 数据格式不正确:', geojson);
           return;
         }
-        this.zhangzhouFeatures = geojson.features;
+        this.nanpingFeatures = geojson.features;
       } catch (e) {
-        console.error('请求漳州 GeoJSON 发生错误:', e);
+        console.error('请求南平 GeoJSON 发生错误:', e);
       }
     },
 
     /**
-     * 绘制漳州边界线，并叠加外部暗色遮罩
+     * 绘制南平边界线，并叠加外部暗色遮罩
      */
-    drawZhangzhouBoundaryAndMask() {
-      if (!this.jmap || !this.layer2 || !this.zhangzhouFeatures.length) {
+    drawNanpingBoundaryAndMask() {
+      if (!this.jmap || !this.layer2 || !this.nanpingFeatures.length) {
         return;
       }
 
@@ -724,9 +724,9 @@ export default {
       }
 
       // -----------------------------
-      // 1. 绘制漳州各区县边界线
+      // 1. 绘制南平各区县边界线
       // -----------------------------
-      const features = this.zhangzhouFeatures;
+      const features = this.nanpingFeatures;
 
       // 用于后续计算包络矩形
       let minLng = Infinity;
@@ -735,7 +735,7 @@ export default {
       let maxLat = -Infinity;
 
       // 收集环线用于“外暗内亮”反向遮罩
-      const zhangzhouOuterRings = [];
+      const nanpingOuterRings = [];
       const boundaryLineDefs = [];
 
       const closeRing = (ring) => {
@@ -782,7 +782,7 @@ export default {
             if (lat > maxLat) maxLat = lat;
           });
 
-          zhangzhouOuterRings.push(normalizedRing);
+          nanpingOuterRings.push(normalizedRing);
 
           boundaryLineDefs.push({ ring: normalizedRing, props });
         };
@@ -822,13 +822,13 @@ export default {
             });
             targetLayer.add(graphic);
           } catch (error) {
-            console.error('添加漳州边界线失败:', error);
+            console.error('添加南平边界线失败:', error);
           }
         });
       };
 
       // -----------------------------
-      // 2. 叠加“漳州外暗色”遮罩
+      // 2. 叠加“南平外暗色”遮罩
       // -----------------------------
       if (!dimLayer) return;
       if (
@@ -841,7 +841,7 @@ export default {
       }
 
       // 优先使用“反向多环”精确遮罩
-      // 优先尝试：外环 + 漳州边界洞（精确到行政区边界）
+      // 优先尝试：外环 + 南平边界洞（精确到行政区边界）
       try {
         const worldOuterRing = [
           [-180, -85],
@@ -855,7 +855,7 @@ export default {
           getSignedArea(worldOuterRing) < 0
             ? worldOuterRing
             : [...worldOuterRing].reverse();
-        const normalizedHoleRings = zhangzhouOuterRings.map((ring) =>
+        const normalizedHoleRings = nanpingOuterRings.map((ring) =>
           getSignedArea(ring) > 0 ? ring : [...ring].reverse()
         );
 
@@ -1134,7 +1134,7 @@ export default {
 
       const sample = points.slice(0, 8);
       let validCount = 0;
-      let zhangzhouCount = 0;
+      let nanpingCount = 0;
       let chinaCount = 0;
       let totalDistancePenalty = 0;
 
@@ -1149,15 +1149,15 @@ export default {
         if (this.isPointInsideBounds(converted, CHINA_BOUNDS)) {
           chinaCount += 1;
         }
-        if (this.isPointInsideBounds(converted, ZHANGZHOU_TRACK_BOUNDS)) {
-          zhangzhouCount += 1;
+        if (this.isPointInsideBounds(converted, NANPING_TRACK_BOUNDS)) {
+          nanpingCount += 1;
         }
 
         const lng = Number(converted[0]);
         const lat = Number(converted[1]);
         totalDistancePenalty += Math.hypot(
-          lng - ZHANGZHOU_TRACK_CENTER[0],
-          lat - ZHANGZHOU_TRACK_CENTER[1]
+          lng - NANPING_TRACK_CENTER[0],
+          lat - NANPING_TRACK_CENTER[1]
         );
       });
 
@@ -1166,7 +1166,7 @@ export default {
       return (
         validCount * 20 +
         chinaCount * 10 +
-        zhangzhouCount * 50 -
+        nanpingCount * 50 -
         totalDistancePenalty
       );
     },

@@ -130,7 +130,7 @@ const fetchVideoUrlByCameraNum = async () => {
   try {
     const response = await http.get(FUZHOU_API_URLS.video.getVideoUrl, {
       cameraNum: currentCameraNum,
-      origid: REGION_IDS.ZHANGZHOU,
+      origid: REGION_IDS.NANPING,
     });
     if (seq !== requestSeq.value) return;
 
