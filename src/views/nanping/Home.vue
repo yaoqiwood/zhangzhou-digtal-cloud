@@ -12,7 +12,7 @@
     <div class="ui-header">
       <div class="header-content">
         <div class="nav-links">
-          <div class="nav-item" :class="{ 'nav-item--inactive': !isHomePage }">
+          <div class="nav-item nav-item--home" :class="{ 'nav-item--inactive': !isHomePage }">
             <i class="nav-icon home-icon"></i>
             <span>首页</span>
           </div>
@@ -2939,6 +2939,11 @@ const goToBillingReports = () => {
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.nav-item--home {
+  color: #e4fcff;
+  text-shadow: 0 0 8px rgba(100, 220, 255, 0.55);
 }
 
 .nav-item--inactive {

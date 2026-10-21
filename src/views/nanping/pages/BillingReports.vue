@@ -4,7 +4,7 @@
       <div class="header-content">
         <div class="nav-links">
           <div
-            class="nav-item"
+            class="nav-item nav-item--home"
             :class="{ 'nav-item--inactive': !isHomePage }"
             @click="goToHomePage"
           >
@@ -258,6 +258,11 @@ onBeforeUnmount(() => {
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.nav-item--home {
+  color: #e4fcff;
+  text-shadow: 0 0 8px rgba(100, 220, 255, 0.55);
 }
 
 .nav-item--inactive {
