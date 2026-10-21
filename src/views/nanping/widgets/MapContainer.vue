@@ -234,6 +234,9 @@ export default {
     this.initMap(); // 初始化页面后直接初始化地图
   },
 
+  beforeUnmount() {
+    if (this.cameraLogCleanup) this.cameraLogCleanup();
+  },
   methods: {
     setPolylineArrowFlowSpeed(speed = 0.00008) {
       const nextSpeed = Number(speed);
@@ -401,7 +404,7 @@ export default {
 
         this.jmap = new joint.JMap(container.id || this.mapId, {
           // 初始化定位到南平全域
-          center: [118.1393645,27.2780755],
+          center: [118.1985085362804, 27.349574389892343],
           zoom: 9.2,
           maxZoom: 18, // 最大缩放
           minZoom: 9.2, // 最小缩放
@@ -467,6 +470,26 @@ export default {
         }
 
         await this.jmap.init();
+        const cameraMap = this.jmap.getMap();
+        const logCameraPosition = () => {
+          const view = cameraMap.getView();
+          const center = view.getCenter();
+          const projection = view.getProjection().getCode();
+          let longitude = center[0];
+          let latitude = center[1];
+          if (projection === 'EPSG:3857') {
+            longitude = center[0] / 6378137 * 180 / Math.PI;
+            latitude = (2 * Math.atan(Math.exp(center[1] / 6378137)) - Math.PI / 2) * 180 / Math.PI;
+          }
+          console.log('[南平地图] 当前镜头参数:', {
+            center: [...center], projection,
+            ...(projection === 'EPSG:3857' || projection === 'EPSG:4326' || projection === 'EPSG:4490' ? { longitude, latitude } : {}),
+            zoom: view.getZoom(), rotation: view.getRotation(), resolution: view.getResolution()
+          });
+        };
+        cameraMap.on('moveend', logCameraPosition);
+        this.cameraLogCleanup = () => cameraMap.un('moveend', logCameraPosition);
+        logCameraPosition();
 
         // 检查 init 后 jmap 是否仍然存在
         if (!this.jmap) {
